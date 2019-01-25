@@ -1,20 +1,3 @@
-let url = function (reqUrl) {
-  switch (reqUrl) {
-    case '':
-    case '/':
-    case '/index':
-      return '/index.html'
-    case '/hydrogen':
-      return '/hydrogen.html'
-    case '/helium':
-      return '/helium.html'
-    case '/css/styles':
-      return '/styles.css'
-    default:
-      return reqUrl;
-  }
-}
-
 let body = function (reqBody) {
   let size = 0;
   const bodyMap = {
@@ -37,6 +20,5 @@ let body = function (reqBody) {
 }
 
 module.exports = {
-  url: url,
   body: body
 }

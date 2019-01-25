@@ -5,6 +5,7 @@ function build() {
   const end = '</ol></body></html>';
 
   fs.readdir('./public/', function (err, files) {
+    if (err) { throw err };
     files.splice(files.indexOf('404.html'), 1);
     files.splice(files.indexOf('css'), 1);
     files.splice(files.indexOf('index.html'), 1);
@@ -19,7 +20,7 @@ function build() {
     fs.writeFile('./public/index.html', main, function (err, data) {
       if (err) { throw err };
     });
-  })
-}
+  });
+};
 
 module.exports = build;
