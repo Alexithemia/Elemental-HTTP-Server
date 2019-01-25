@@ -36,7 +36,10 @@ const server = http.createServer(function (req, res) {
     req.on('end', function (chunk) {
       console.log(req.method);
       if (chunk) { body += chunk; };
+
       let elementData = querystring.parse(body);
+      console.log(elementData);
+
 
       //checks body for correct data
       if (!check.body(elementData)) {
@@ -48,10 +51,10 @@ const server = http.createServer(function (req, res) {
       };
       if (req.method === 'GET') {
         //on GET reads file and sends content back as body, 404 return if it does not exist
-        fs.readFile('./public' + path, 'utf8', (err, data) => {
+        fs.readFile('./public' + path, 'utf8', function (err, data) {
           if (err && err.code === 'ENOENT') {
             res.statusCode = 404;
-            fs.readFile('./public/404.html', 'utf8', (err, data) => {
+            fs.readFile('./public/404.html', 'utf8', function (err, data) {
               if (err) { throw err; };
               return res.end(data);
             });
@@ -59,6 +62,7 @@ const server = http.createServer(function (req, res) {
             console.log(err);
             throw err;
           } else {
+            res.statusCode = 200;
             return res.end(data);
           };
         });
@@ -96,7 +100,7 @@ const server = http.createServer(function (req, res) {
           return res.end('You cannot send a post to ' + req.url);
         };
         // check if file already exists, else write file
-        fs.stat('./public/' + elementData.elementName + '.html', (err) => {
+        fs.stat('./public/' + elementData.elementName + '.html', function (err) {
           if (err && err.code !== 'ENOENT') {
             console.log(err);
             throw err;
@@ -106,7 +110,8 @@ const server = http.createServer(function (req, res) {
             });
             return res.end('{ "error" : "resource ' + elementData.elementName + '.html' + ' already exists" }');
           } else {
-            fs.writeFile('./public/' + elementData.elementName + '.html', element(elementData), (err) => {
+
+            fs.writeFile('./public/' + elementData.elementName + '.html', element(elementData), function (err) {
               if (err) {
                 res.writeHead(500, {
                   'Content-Type': 'application/json'
@@ -114,11 +119,10 @@ const server = http.createServer(function (req, res) {
                 return res.end('{ "error" : "could not write file" }');
               };
               index();
-
-              res.writeHead(200, {
-                'Content-Type': 'application/json'
+              res.writeHead(302, {
+                'Location': '/' + elementData.elementName + '.html'
               });
-              return res.end('{ "success": true }');
+              return res.end();
             });
           };
         });
@@ -148,6 +152,7 @@ const server = http.createServer(function (req, res) {
             return res.end('<html><body>Not Authorized</body></html>');
           };
         }
+
         //check if file exists
         fs.stat('./public' + path, (err) => {
           if (err && err.code === 'ENOENT') {

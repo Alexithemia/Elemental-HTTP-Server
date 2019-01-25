@@ -82,6 +82,42 @@ h3{
   color: #F2FFC1;
 }
 
+#add{
+  float:right;
+}
+
+form{
+  background-color: white;
+}
+input[type=text]:focus {
+  background-color: lightblue;
+}
+#description{
+  width:70%;
+  height: 60px;
+  resize: none;
+}
+.addForm{
+  display:none;
+}
+#deleteForm{
+  background-color: white;
+}
+.deleteForm{
+  display: none;
+}
+#putForm{
+  background-color: white;
+}
+.putForm{
+  display: none;
+}
+#elementDescription{
+  width:70%;
+  height: 60px;
+  resize: none;
+}
+
 p{
   color: #C6C5AC;
   font-family: 'Open Sans', 'Helvetica', sans-serif;
@@ -107,4 +143,8 @@ a{
 a:hover{
   color: #C6C5AC;
   border-bottom: 1px dashed #C6C5AC;
+}
+
+.show{
+  display:block;
 }
