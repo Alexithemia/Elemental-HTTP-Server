@@ -95,20 +95,32 @@ const server = http.createServer(function (req, res) {
           });
           return res.end('You cannot send a post to ' + req.url);
         };
-        // write file
-        fs.writeFile('./public/' + elementData.elementName + '.html', element(elementData), (err) => {
-          if (err) {
+        // check if file already exists, else write file
+        fs.stat('./public/' + elementData.elementName + '.html', (err) => {
+          if (err && err.code !== 'ENOENT') {
+            console.log(err);
+            throw err;
+          } else if (!err) {
             res.writeHead(500, {
               'Content-Type': 'application/json'
             });
-            return res.end('{ "error" : "could not write file" }');
-          };
-          index();
+            return res.end('{ "error" : "resource ' + elementData.elementName + '.html' + ' already exists" }');
+          } else {
+            fs.writeFile('./public/' + elementData.elementName + '.html', element(elementData), (err) => {
+              if (err) {
+                res.writeHead(500, {
+                  'Content-Type': 'application/json'
+                });
+                return res.end('{ "error" : "could not write file" }');
+              };
+              index();
 
-          res.writeHead(200, {
-            'Content-Type': 'application/json'
-          });
-          return res.end('{ "success": true }');
+              res.writeHead(200, {
+                'Content-Type': 'application/json'
+              });
+              return res.end('{ "success": true }');
+            });
+          };
         });
       } else if (req.method === 'PUT') {
         //on PUT checks authorization and file exists at path, then rewrites file with changes
