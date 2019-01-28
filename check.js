@@ -7,7 +7,7 @@ let body = function (reqBody) {
     elementDescription: true
   }
   for (const key in reqBody) {
-    size++
+    size++;
     if (!bodyMap[key]) {
       return false;
     }
