@@ -3,7 +3,7 @@ function changeElement() {
   let elementSymbol = document.getElementById('elementSymbol');
   let elementAtomicNumber = document.getElementById('elementAtomicNumber');
   let elementDescription = document.getElementById('elementDescription');
-  let description = elementDescription.value.replace(/ /g, '%20')
+  let description = elementDescription.value.replace(/ /g, '%20');
 
   let putBody = `${elementName.name}=${elementName.value}&${elementSymbol.name}=${elementSymbol.value}&${elementAtomicNumber.name}=${elementAtomicNumber.value}&${elementDescription.name}=${description}`;
 
